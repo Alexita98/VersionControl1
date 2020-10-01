@@ -31,6 +31,7 @@ namespace ExcelGenerating_RPCYYH
         Excel.Workbook xlWB; // A létrehozott munkafüzet
         Excel.Worksheet xlSheet; // Munkalap a munkafüzeten belül
 
+
         public Form1()
         {
             InitializeComponent();
@@ -129,6 +130,26 @@ namespace ExcelGenerating_RPCYYH
              GetCell(2, 1),
              GetCell(1 + values.GetLength(0), values.GetLength(1))).Value2 = values;
 
+            //Fejléc formázás
+            Excel.Range headerRange = xlSheet.get_Range(GetCell(1, 1), GetCell(1, headers.Length));
+            headerRange.Font.Bold = true;
+            headerRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+            headerRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            headerRange.EntireColumn.AutoFit();
+            headerRange.RowHeight = 40;
+            headerRange.Interior.Color = Color.LightBlue;
+            headerRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
+
+            //Tábla mérete
+            int lastRowID = xlSheet.UsedRange.Rows.Count;
+            //Tábla formázás
+            Excel.Range table = xlSheet.get_Range(GetCell(1, 1), GetCell(1, lastRowID));
+            //Az egész táblának is legyen olyan körbe szegélye, mint a fejlécnek
+            table.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
+            //Az első oszlop adatai legyenek félkövérek és a háttér legyen halvány sárga
+            
+            //Az utolsó oszlop adatainak háttere legyen halványzöld.
+            //Az utolsó oszlop adatai két tizedesre kerekített formában jelenjenek meg. (Google)
         }
         private string GetCell(int x, int y)
         {
@@ -146,6 +167,8 @@ namespace ExcelGenerating_RPCYYH
 
             return ExcelCoordinate;
         }
+
+
     }
 
     
