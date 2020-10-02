@@ -129,6 +129,38 @@ namespace ExcelExport_week4
              GetCell(2, 1),
              GetCell(1 + values.GetLength(0), values.GetLength(1))).Value2 = values;
 
+            //Fejléc formázás
+            Excel.Range headerRange = xlSheet.get_Range(GetCell(1, 1), GetCell(1, headers.Length));
+            headerRange.Font.Bold = true;
+            headerRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+            headerRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            headerRange.EntireColumn.AutoFit();
+            headerRange.RowHeight = 40;
+            headerRange.Interior.Color = Color.LightBlue;
+            headerRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
+
+            //Tábla mérete
+            int lastRowID = xlSheet.UsedRange.Rows.Count;
+            int lastColumnID = xlSheet.UsedRange.Columns.Count; //9
+
+            //Tábla formázás
+            Excel.Range table = xlSheet.get_Range(GetCell(1, 1), GetCell(lastRowID, lastColumnID));
+            Excel.Range firstCol = xlSheet.get_Range(GetCell(2, 1), GetCell(lastRowID, 1));
+            Excel.Range lastCol = xlSheet.get_Range(GetCell(2, lastColumnID), GetCell(lastRowID, lastColumnID));
+
+            //Az egész táblának is legyen olyan körbe szegélye, mint a fejlécnek
+            table.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
+
+            //Az első oszlop adatai legyenek félkövérek és a háttér legyen halvány sárga
+            firstCol.Font.Bold = true;
+            firstCol.Interior.Color = Color.LightYellow;
+
+            //Az utolsó oszlop adatainak háttere legyen halványzöld.
+            lastCol.Interior.Color = Color.LightGreen;
+
+            //Az utolsó oszlop adatai két tizedesre kerekített formában jelenjenek meg. (Google)
+            // ???
+
         }
 
         private string GetCell(int x, int y)
