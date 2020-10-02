@@ -79,6 +79,28 @@ namespace ExcelExport_week4
         }
 
         //CreateExcel függvény létrehozás
-        
-    }
+        private void CreateTable()
+        {
+            //A CreateTable függvényen belül, hozz létre egy tömböt, mely tartalmazza a 
+            //tábla fejléceit + egy extra oszlop fejlécét.
+            string[] headers = new string[]
+            {
+             "Kód",
+             "Eladó",
+             "Oldal",
+             "Kerület",
+             "Lift",
+             "Szobák száma",
+             "Alapterület (m2)",
+             "Ár (mFt)",
+             "Négyzetméter ár (Ft/m2)"
+            };
+
+            //Ezután egy for ciklus segítségével írd ki a tömb elemeit a munkalap első sorába.
+            for (int i = 0; i < headers.Length; i++)
+            {
+                xlSheet.Cells[1, i + 1] = headers[0];
+            }
+
+        }
 }
