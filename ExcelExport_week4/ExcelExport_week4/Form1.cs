@@ -121,9 +121,13 @@ namespace ExcelExport_week4
                 values[k, 5] = flat.NumberOfRooms;
                 values[k, 6] = flat.FloorArea;
                 values[k, 7] = flat.Price;
-                values[k, 8] = "";
-                k++;
 
+                //Az utolsó oszlopba egy Excel képlet kerüljön string formában.
+                //Az Excel képletek szövegesek és mindig “=” jellel kezdődnek.
+                values[k, 8] = "=" + GetCell(k + 2, 7) + "*" + GetCell(k + 2, 8);
+                //Excelben: =G2*H2 majd G3*H3 stb...
+                
+                k++;
             }
             xlSheet.get_Range(
              GetCell(2, 1),
@@ -159,7 +163,7 @@ namespace ExcelExport_week4
             lastCol.Interior.Color = Color.LightGreen;
 
             //Az utolsó oszlop adatai két tizedesre kerekített formában jelenjenek meg. (Google)
-            // ???
+            lastCol.NumberFormat = "0.00";
 
         }
 
