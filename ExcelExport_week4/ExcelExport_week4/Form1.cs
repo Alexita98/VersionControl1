@@ -14,12 +14,12 @@ namespace ExcelExport_week4
 {
     public partial class Form1 : Form
     {
+        //A Form1 osztály szintjén példányosítsd az ORM objektumot!
+        RealEstateEntities context = new RealEstateEntities();
+
         //A Form1 osztály szintjén hozz létre egy Flat típusú elemekből álló listára 
         //mutató referenciát. (Nem kell inicializálni new-val.)
         List<Flat> Flats;
-
-        //A Form1 osztály szintjén példányosítsd az ORM objektumot!
-        RealEstateEntities context = new RealEstateEntities();
 
         //Az Excel objektum könyvtár már része a projektnek, de még az aktuális fájlba is
         //be kell hivatkozni a using kulcsszó segítségével. Felülre bemásolva:
@@ -30,6 +30,7 @@ namespace ExcelExport_week4
         Excel.Application xlApp; // A Microsoft Excel alkalmazás
         Excel.Workbook xlWB; // A létrehozott munkafüzet
         Excel.Worksheet xlSheet; // Munkalap a munkafüzeten belül
+
 
         public Form1()
         {
@@ -50,7 +51,7 @@ namespace ExcelExport_week4
                 xlSheet = xlWB.ActiveSheet;
 
                 // Tábla létrehozása
-                //CreateTable();
+                CreateTable();
 
                 // Control átadása a felhasználónak
                 xlApp.Visible = true;
