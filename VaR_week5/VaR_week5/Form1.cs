@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace VaR_week5
 
         //8) Hozz létre egy PortfolioItem típusú elemekből álló Portfolio nevű listát a Form1 szintjén.
         List<PortfolioItem> Portfolio = new List<PortfolioItem>();
+        List<decimal> Nyereségek = new List<decimal>();
 
         public Form1() //konstruktor
         {
@@ -36,7 +38,8 @@ namespace VaR_week5
             //12) hívd meg a CreatePortfolio() függvényt
             CreatePortfolio();
 
-            List<decimal> Nyereségek = new List<decimal>();
+            //14) Számítsd ki a VaR értékét
+            //List<decimal> Nyereségek = new List<decimal>();
             int intervalum = 30;
             DateTime kezdőDátum = (from x in Ticks select x.TradingDay).Min();
             DateTime záróDátum = new DateTime(2016, 12, 30);
@@ -89,6 +92,33 @@ namespace VaR_week5
                 value += (decimal)last.Price * item.Volume;
             }
             return value;
+        }
+
+        private void BtnSave_Click(object sender, EventArgs e)
+        {
+            //14) gy gombra kattintva jöjjön fel egy mentés ablak, ahol a felhasználó megadhatja, hová szeretné elmenteni a nyereség listát
+            SaveFileDialog sfd = new SaveFileDialog();
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+
+            //15) A fájl első sorában szerepeljen a fejléc, mely az “Időszak” és a “Nyereség” szavakat tartalmazza
+            //    A sorokban először a lista aktuális elemszáma, majd a megfelelő elem értéke jelenjen meg
+            int k = 0;
+            using (StreamWriter sw = new StreamWriter(sfd.FileName, false, Encoding.Default))
+            {
+                sw.Write("Időszak ");
+                sw.Write("Nyereség");
+                sw.WriteLine();
+                foreach(var ny in Nyereségek)
+                {
+                    //sw.Write(Nyereségek[k]);
+                    sw.Write(k);
+                    sw.Write(" ");
+                    sw.Write(ny);
+                    sw.WriteLine();
+                    k++;
+                }
+            }
+
         }
         //where záradékban elsőként kiszűrjük azokat a Tick-eket, ahol az Index megegyezik a keresett index-el
         //A Trim()-re azért van szükség, mert az adatbázisban az Index mező nchar(15) típusú. A fel nem használt karaktereket betűkkel tölti fel. Ezek levágására szolgál a Trim() függvény.
