@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VaR_week5.Entities;
 
 namespace VaR_week5
 {
@@ -18,18 +19,41 @@ namespace VaR_week5
 
         //2) példányosítsd az ORM objektumot
         PortfolioEntities context = new PortfolioEntities();
-        public Form1() //konstrukto
+
+        //8) Hozz létre egy PortfolioItem típusú elemekből álló Portfolio nevű listát a Form1 szintjén.
+        List<PortfolioItem> Portfolio = new List<PortfolioItem>();
+
+        public Form1() //konstruktor
         {
             InitializeComponent();
 
-            //3) A konstruktorban másold az adattábát a memóriába
+            //3) a konstruktorban másold az adattábát a memóriába
             Ticks = context.Ticks.ToList();
 
             //4) töltsd fel a lista elemeivel a DataGridView-t
             dataGridView1.DataSource = Ticks;
 
+            //12) hívd meg a CreatePortfolio() függvényt
+            CreatePortfolio();
 
+        }
 
+        //9) készítsd el a CreatePortfolio() függvényt
+        private void CreatePortfolio()
+        {
+            //10) vedd fel az alábbi három részvényt a Portfolio listába
+            Portfolio.Add(new PortfolioItem() { Index = "OTP", Volume = 10 });
+            Portfolio.Add(new PortfolioItem() { Index = "ZWACK", Volume = 10 });
+            Portfolio.Add(new PortfolioItem() { Index = "ELMU", Volume = 10 });
+
+            /* VAGY így is lehet részletesen szemléltetve
+            PortfolioItem p = new PortfolioItem();
+            p.Index = "OTP";
+            p.Volume = 10;
+            Portfolio.Add(p); */
+
+            //11) portfóliódat jelenítsd megy DataGridView-ban
+            dataGridView2.DataSource = Portfolio;
         }
     }
 }
