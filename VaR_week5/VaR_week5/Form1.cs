@@ -36,6 +36,8 @@ namespace VaR_week5
             //12) hívd meg a CreatePortfolio() függvényt
             CreatePortfolio();
 
+
+
         }
 
         //9) készítsd el a CreatePortfolio() függvényt
@@ -55,5 +57,26 @@ namespace VaR_week5
             //11) portfóliódat jelenítsd megy DataGridView-ban
             dataGridView2.DataSource = Portfolio;
         }
+
+        //13) GetPortfolioValue() függvényt másold be
+        private decimal GetPortfolioValue(DateTime date)
+        {
+            decimal value = 0;
+            foreach (var item in Portfolio)
+            {
+                var last = (from x in Ticks
+                            where item.Index == x.Index.Trim()
+                               && date <= x.TradingDay
+                            select x)
+                            .First();
+                value += (decimal)last.Price * item.Volume;
+            }
+            return value;
+        }
+        //where záradékban elsőként kiszűrjük azokat a Tick-eket, ahol az Index megegyezik a keresett index-el
+        //A Trim()-re azért van szükség, mert az adatbázisban az Index mező nchar(15) típusú. A fel nem használt karaktereket betűkkel tölti fel. Ezek levágására szolgál a Trim() függvény.
+        //A tőzsdén nem minden nap van kereskedés. Ha a kérdéses napon az adott indexhez nem tartozik rekord az adatbázisban, a kérdéses naphoz képest visszafelé számolva a legközelebbi kereskedési nappal számolunk: date <= x.TradingDay.
+
+
     }
 }
