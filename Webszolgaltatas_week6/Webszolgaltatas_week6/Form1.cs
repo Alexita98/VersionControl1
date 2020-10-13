@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 using Webszolgaltatas_week6.Entities;
 using Webszolgaltatas_week6.MnbServiceReference;
 
@@ -47,6 +48,43 @@ namespace Webszolgaltatas_week6
 
             //8) Hozz létre egy DataGridView-t a Form1-en, és állítsd be, hogy a Rates legyen az adatforrása
             dataGridView1.DataSource = Rates;
+
+            xmlProcessing();
+
+        }
+
+        private void xmlProcessing()
+        {
+            //9) Példányosíts egy XmlDocument osztályt xml néven
+            var xml = new XmlDocument();
+
+            //10) Hívd meg a példányosított XmlDocument LoadXml metódusát, és add át 
+            //    neki a korábban lekérdezett string formátumú XML-t amit 
+            //    szolgáltatásból kaptál vissza válaszként.
+            xml.LoadXml(result);
+
+            //11) Végigmegünk a dokumentum fő elemének gyermekein. 
+            foreach (XmlElement element in xml.DocumentElement)
+            {
+                //12) A foreach-en belül hozz létre egy példányt a RateData osztályból, és add hozzá a Rates listához.
+                var rate = new RateData();
+                Rates.Add(rate);
+
+                //13) A foreach-en belül töltsd fel a RateData tulajdonságait az aktuális XML elemnek megfelelően.
+                    //Date
+                rate.Date = DateTime.Parse(element.GetAttribute("date"));
+
+                    //Valuta
+                var childElement = (XmlElement)element.ChildNodes[0];
+                rate.Currency = childElement.GetAttribute("curr");
+
+                    //Érték
+                var unit = decimal.Parse(childElement.GetAttribute("unit"));
+                var value = decimal.Parse(childElement.InnerText);
+                if (unit != 0) rate.Value = value / unit;
+
+
+            }
 
         }
     }
