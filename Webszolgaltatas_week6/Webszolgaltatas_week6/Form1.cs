@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 using System.Xml;
 using Webszolgaltatas_week6.Entities;
 using Webszolgaltatas_week6.MnbServiceReference;
@@ -35,6 +36,9 @@ namespace Webszolgaltatas_week6
 
             //9) xml feldolgozás függvény meghívása
             xmlProcessing(result);
+
+            //15) Adatvizualizációs függvény meghívása
+            dataVisualization();
 
         }
 
@@ -94,8 +98,42 @@ namespace Webszolgaltatas_week6
                 var value = decimal.Parse(childElement.InnerText);
                 if (unit != 0) rate.Value = value / unit;
 
-
             }
+
+        }
+        private void dataVisualization()
+        {
+            //16) Adj egy Chart-ot a Form1-hez design nézetben. A neve legyen chartRateData.
+            // 17) A Chart adatforrása legyen a Rates lista
+            chartRateData.DataSource = Rates;
+
+            //18) A Series tulajdonsága egy adatsorokból álló tömb, ami alapértelmezetten
+            //    egy elemű. A tömb első elemét érdemes lekérdezni egy változóba, 
+            //    hogy könnyebb legyen átírni a tulajdonságait.
+            var series = chartRateData.Series[0];
+
+            //19) Az adatsor típusa legyen SeriesChartType.Line
+            series.ChartType = SeriesChartType.Line;
+
+            //20) Az adatsornak meg kell mondani, hogy az egyes tengelyein az 
+            //    adatforrás mely elemei látszódjanak. Az XValueMember értéke legyen 
+            //    a “Date”, az YValueMember értéke pedig legyen “Value”.
+            series.XValueMember = "Date";
+            series.YValueMembers = "Value";
+
+            //21) Diagram formázás
+
+                //Az adatsor vastagsága legyen kétszeres
+                series.BorderWidth = 2;
+                //Ne látszódjon oldalt a címke (legend)
+                var legend = chartRateData.Legends[0];
+                legend.Enabled = false;
+                //Ne látszódjanak a fő grid vonalak se az X, se az Y tengelyen
+                var ChartArea = chartRateData.ChartAreas[0];
+                ChartArea.AxisX.MajorGrid.Enabled = false;
+                ChartArea.AxisY.MajorGrid.Enabled = false;
+                //Az Y tengely ne nullától induljon (ez egy bool tulajdonság)
+                ChartArea.AxisY.IsStartedFromZero = false;
 
         }
     }
