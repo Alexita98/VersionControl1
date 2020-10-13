@@ -20,6 +20,9 @@ namespace Webszolgaltatas_week6
         //   BindingList -et Rates néven
         BindingList<RateData> Rates = new BindingList<RateData>();
 
+        //26) Hozz létre egy string típusú elemekből álló BindingList-et Currencies néven.
+        BindingList<string> Currencies = new BindingList<string>();
+
         public Form1()
         {
             InitializeComponent();
@@ -45,6 +48,9 @@ namespace Webszolgaltatas_week6
             //24) Rendelj eseménykezelőt a DateTimePicker-ek és a ComboBox alapértelmezett
             //    eseményéhez (dupla klikk) is, és mindegyikből hívd meg a RefreshData-t.
 
+            //27) Állítsd be ezt a listát a ComboBox adatforrásának
+            comboBox1.DataSource = Currencies;
+
         }
 
         private string webServiceCalling()
@@ -62,6 +68,9 @@ namespace Webszolgaltatas_week6
                 currencyNames = comboBox1.SelectedItem.ToString(),
                 startDate = dateTimePicker1.Value.ToString(),
                 endDate = dateTimePicker2.Value.ToString()
+
+                
+                
             };
 
             //3) Hívd meg az mnbService GetExchangeRates nevű függvényét a request bemeneti
