@@ -19,6 +19,9 @@ namespace Mikromszim_week7
         List<BirthProbability> BirthProbabilities = new List<BirthProbability>();
         List<DeathProbability> DeathProbabilities = new List<DeathProbability>();
 
+        //7) Hozz létre egy véletlenszám generátort az osztály szintjén, és adj neki egy tetszőleges induló Seed-et
+        Random rng = new Random(1234);
+
         public Form1()
         {
             InitializeComponent();
@@ -29,9 +32,30 @@ namespace Mikromszim_week7
             DeathProbabilities = GetDeathProbabilities(@"C:\Temp\nép.csv");
 
             //6) A betöltés tesztelésének legegyszerűbb módja egy ideiglenes DataGridView a Form1-en. Ennek az adatforrásába betöltve a felolvasott listák egyikét, megjelenik a lista tartalma.
-            dataGridView1.DataSource = BirthProbabilities;
+            //dataGridView1.DataSource = BirthProbabilities;
             //NE IJEDJ MEG, CSAK SOKAT KELL VÁRNI, de működik
-            
+
+            //7) Szimuláció vázának felépítése
+            // Végigmegyünk a vizsgált éveken
+            for (int year = 2005; year <= 2024; year++)
+            {
+                // Végigmegyünk az összes személyen
+                for (int i = 0; i < Population.Count; i++)
+                {
+                    // Ide jön a szimulációs lépés
+                }
+
+                int numOfMales = (from x in Population
+                                  where x.Gender == Gender.Male && x.IsAlive
+                                  select x).Count();
+                int numOfFemales = (from x in Population
+                                    where x.Gender == Gender.Female && x.IsAlive
+                                    select x).Count();
+                Console.WriteLine(
+                    string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, numOfMales, numOfFemales));
+                //Output ablakban a jobb alsó sarokban találod meg, csak feljebb kell görgetni
+            }
+
         }
 
         //4) Hozz létre a Form1-ben egy-egy metódust a három .csv állomány felolvasásához!
