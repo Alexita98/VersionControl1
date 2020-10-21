@@ -19,6 +19,10 @@ namespace Mikromszim_week7
         List<BirthProbability> BirthProbabilities = new List<BirthProbability>();
         List<DeathProbability> DeathProbabilities = new List<DeathProbability>();
 
+        //1x) Hozz létre két listát a férfi és a női lélekszámok tárolására, és a szimuláció során töltsd fel őket a megfelelő értékekkel.
+        List<int> FemaleNum = new List<int>();
+        List<int> MaleNum = new List<int>();
+
         //7) Hozz létre egy véletlenszám generátort az osztály szintjén, és adj neki egy tetszőleges induló Seed-et
         Random rng = new Random(1234);
 
@@ -34,31 +38,6 @@ namespace Mikromszim_week7
             //6) A betöltés tesztelésének legegyszerűbb módja egy ideiglenes DataGridView a Form1-en. Ennek az adatforrásába betöltve a felolvasott listák egyikét, megjelenik a lista tartalma.
             //dataGridView1.DataSource = BirthProbabilities;
             //NE IJEDJ MEG, CSAK SOKAT KELL VÁRNI, de működik
-
-            //7) Szimuláció vázának felépítése
-            // Végigmegyünk a vizsgált éveken
-            for (int year = 2005; year <= 2024; year++)
-            {
-                // Végigmegyünk az összes személyen
-                for (int i = 0; i < Population.Count; i++)
-                {
-                    //9) Szimulációs lépés függvény meghívás
-                    // Hozz létre egy visszatérési érték nélküli függvényt SimStep néven, és hívd meg a szimuláció belső ciklusából. 
-                    // A függvénynek át kell adnod paraméterként az aktuális évet és az éppen kiválasztott személy entitást.
-                    SimStep(year, Population[i]);
-
-                }
-
-                int numOfMales = (from x in Population
-                                  where x.Gender == Gender.Male && x.IsAlive
-                                  select x).Count();
-                int numOfFemales = (from x in Population
-                                    where x.Gender == Gender.Female && x.IsAlive
-                                    select x).Count();
-                Console.WriteLine(
-                    string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, numOfMales, numOfFemales));
-                //Output ablakban a jobb alsó sarokban találod meg, csak feljebb kell görgetni
-            }
 
         }
 
@@ -167,6 +146,71 @@ namespace Mikromszim_week7
                     újszülött.Gender = (Gender)(rng.Next(1, 3));
                     Population.Add(újszülött);
                 }
+            }
+        }
+
+        private void Simulation()
+        {
+            //7) Szimuláció vázának felépítése
+            // Végigmegyünk a vizsgált éveken
+            for (int year = 2005; year <= 2024; year++)
+            {
+                // Végigmegyünk az összes személyen
+                for (int i = 0; i < Population.Count; i++)
+                {
+                    //9) Szimulációs lépés függvény meghívás
+                    // Hozz létre egy visszatérési érték nélküli függvényt SimStep néven, és hívd meg a szimuláció belső ciklusából. 
+                    // A függvénynek át kell adnod paraméterként az aktuális évet és az éppen kiválasztott személy entitást.
+                    
+                    SimStep(year, Population[i]);
+
+                }
+
+                int numOfMales = (from x in Population
+                                  where x.Gender == Gender.Male && x.IsAlive
+                                  select x).Count();
+                int numOfFemales = (from x in Population
+                                    where x.Gender == Gender.Female && x.IsAlive
+                                    select x).Count();
+                Console.WriteLine(
+                    string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, numOfMales, numOfFemales));
+                //Output ablakban a jobb alsó sarokban találod meg, csak feljebb kell görgetni
+
+                FemaleNum.Add(numOfFemales);
+                MaleNum.Add(numOfMales);
+            }
+        }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            richTextBox1.Clear();
+            FemaleNum.Clear();
+            MaleNum.Clear();
+            //9) A szimuláció futtatás ne a konstruktorból induljon. Szervezd ki a kódot egy Simulation függvénybe, amit hívj meg a Start gomb eseménykezelőjéből.
+            Simulation();
+            //1x) Hozz létre egy DisplayResults függvényt, amit hívj meg a szimuláció futása után. 
+            DisplayResults();
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            if(ofd.ShowDialog()==DialogResult.OK)
+            {
+                textBox1.Text = Convert.ToString("C:/Temp/nép.csv");
+            }
+        }
+
+        private void DisplayResults()
+        {
+            int i = 0;
+            for (int year = 2005; year < 2024; year++)
+            {
+                string text="Szimulációs év: " + Convert.ToString(year) + "\n" + "\t" + "Fiúk: " + MaleNum[i] + "\n" + "\t" + "Lányok: " + FemaleNum[i];
+
+                richTextBox1.Text = text;
+
+                i++;
             }
         }
     }
