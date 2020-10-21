@@ -42,7 +42,11 @@ namespace Mikromszim_week7
                 // Végigmegyünk az összes személyen
                 for (int i = 0; i < Population.Count; i++)
                 {
-                    // Ide jön a szimulációs lépés
+                    //9) Szimulációs lépés függvény meghívás
+                    // Hozz létre egy visszatérési érték nélküli függvényt SimStep néven, és hívd meg a szimuláció belső ciklusából. 
+                    // A függvénynek át kell adnod paraméterként az aktuális évet és az éppen kiválasztott személy entitást.
+                    SimStep(year, Population[i]);
+
                 }
 
                 int numOfMales = (from x in Population
@@ -127,6 +131,43 @@ namespace Mikromszim_week7
             }
 
             return deathProbabilities;
+        }
+
+        //8) szimulációs lépés függvény elkészítés
+        private void SimStep(int year, Person person)
+        {
+            //Ha halott akkor kihagyjuk, ugrunk a ciklus következő lépésére
+            if (!person.IsAlive) return;
+
+            // Letároljuk az életkort, hogy ne kelljen mindenhol újraszámolni
+            byte age = (byte)(year - person.BirthYear);
+
+            // Halál kezelése
+            // Halálozási valószínűség kikeresése
+            double pDeath = (from x in DeathProbabilities
+                             where x.Gender == person.Gender && x.Age == age
+                             select x.Probability).FirstOrDefault();
+            // Meghal a személy?
+            if (rng.NextDouble() <= pDeath)
+                person.IsAlive = false;
+
+            //Születés kezelése - csak az élő nők szülnek
+            if (person.IsAlive && person.Gender == Gender.Female)
+            {
+                //Szülési valószínűség kikeresése
+                double pBirth = (from x in BirthProbabilities
+                                 where x.Age == age
+                                 select x.Probability).FirstOrDefault();
+                //Születik gyermek?
+                if (rng.NextDouble() <= pBirth)
+                {
+                    Person újszülött = new Person();
+                    újszülött.BirthYear = year;
+                    újszülött.NbrOfChildren = 0;
+                    újszülött.Gender = (Gender)(rng.Next(1, 3));
+                    Population.Add(újszülött);
+                }
+            }
         }
     }
 }
