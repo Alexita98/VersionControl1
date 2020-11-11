@@ -23,9 +23,13 @@ namespace Fejlesztési_minták_week8
         public IToyFactory Factory
         {
             get { return _factory; }
-            set { _factory = value; }
+            set { _factory = value;
+                DisplayNext();
+            }
         }
 
+        //Hozz létre egy osztályszintű Toy típusú változót _nextToy néven
+        private Toy _nextToy;
 
         public Form1()
         {
@@ -68,5 +72,26 @@ namespace Fejlesztési_minták_week8
                 }
             }
         }
+
+        private void Button1_Click(object sender, EventArgs e) //Car
+        {
+            Factory = new CarFactory();
+        }
+
+        private void Button2_Click(object sender, EventArgs e) //Ball
+        {
+            Factory = new BallFactory();
+        }
+
+        private void DisplayNext()
+        {
+            if (_nextToy != null)
+                Controls.Remove(_nextToy);
+            _nextToy = Factory.CreateNew();
+            _nextToy.Top = label1.Top + label1.Height + 20;
+            _nextToy.Left = label1.Left;
+            Controls.Add(_nextToy);
+        }
     }
+
 }
