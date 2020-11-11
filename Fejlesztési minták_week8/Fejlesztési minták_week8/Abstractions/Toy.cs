@@ -37,7 +37,7 @@ namespace Fejlesztési_minták_week8.Abstractions
 
         //Hozz létre egy publikus függvényt MoveBall néven. A függvényben növeld meg eggyel az aktuális Ball Left tulajdonságát.
         //Az absztrakció egy másik változata az úgynevezett virtuális (virtual) elem. Ez annyiban különbözik az absztrakt elemektől, hogy alapvetően ki van fejtve, és önmagában is használható, de lehetőséget ad arra, hogy a leszármazott osztályban felülírjuk az adott függvény működését.
-        public virtual void MoveBall()
+        public virtual void MoveToy()
         {
             Left += 1;
         }

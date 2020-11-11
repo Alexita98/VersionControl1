@@ -1,4 +1,5 @@
-﻿using Fejlesztési_minták_week8.Entities;
+﻿using Fejlesztési_minták_week8.Abstractions;
+using Fejlesztési_minták_week8.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,12 +15,12 @@ namespace Fejlesztési_minták_week8
     public partial class Form1 : Form
     {
         //Hozz létre a Form1 osztály szintjén egy Ball típusú elemekből álló listát _balls néven.
-        private List<Ball> _balls = new List<Ball>();
+        private List<Toy> _toys = new List<Toy>();
 
-        private BallFactory _factory;
+        private IToyFactory _factory;
 
         //Hozz létre egy BallFactory típusú kifejtett propertyt is Factory néven
-        public BallFactory Factory
+        public IToyFactory Factory
         {
             get { return _factory; }
             set { _factory = value; }
@@ -31,27 +32,28 @@ namespace Fejlesztési_minták_week8
             InitializeComponent();
 
             //A konstruktorban töltsd fel a Factory változót egy BallFactory példánnyal.
-            Factory = new BallFactory();
+            Factory = new CarFactory();
+            //Factory = new BallFactory();
         }
 
         private void CreateTimer_Tick(object sender, EventArgs e)
         {
             //A createTimer eseménykezelőjében a Factory CreateNew metódusát felhasználva hozz létre egy Ball példányt. Add hozzá a _balls listához, és a mainPanel vezérlőihez. 
-            var ball = Factory.CreateNew();
-            _balls.Add(ball);
-            mainpanel.Controls.Add(ball);
+            var toy = Factory.CreateNew();
+            _toys.Add(toy);
+            mainpanel.Controls.Add(toy);
 
             //A Left tulajdonságát pedig állítsd a szélessége negatív értékére. (Ezzel a képernyőn kívül jön majd létre a labda és a futószalagon szép folyamatosan úszik majd be.)
-            ball.Left = -ball.Width;
+            toy.Left = -toy.Width;
         }
 
         private void ConveyorTimer_Tick(object sender, EventArgs e)
         {
             //egy a cikluson kívüli segédváltozóval tárold le a leginkább jobbra levő Ball példány pozícióját.
             var maxPosition = 0;
-            foreach (var b in _balls)
+            foreach (var b in _toys)
             {
-                b.MoveBall();
+                b.MoveToy();
                 if (b.Left > maxPosition)
                 {
                     maxPosition = b.Left;
@@ -60,9 +62,9 @@ namespace Fejlesztési_minták_week8
                 //A ciklus után, ha a legnagyobb pozíció eléri az 1000-et akkor tárold le egy változóba a _balls lista első elemét és töröld ki a listából és a Form vezérlőiből is.
                 if (maxPosition>=1000)
                 {
-                    var OldestBall = _balls[0];
-                    _balls.Remove(OldestBall);
-                    mainpanel.Controls.Remove(OldestBall);
+                    var OldestToy = _toys[0];
+                    _toys.Remove(OldestToy);
+                    mainpanel.Controls.Remove(OldestToy);
                 }
             }
         }
