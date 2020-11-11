@@ -9,7 +9,8 @@ using System.Windows.Forms;
 namespace Fejlesztési_minták_week8.Entities
 {
     /* System.Windows.Forms-t kell behivatkozni, nem a System.Reflection.Emit-et!*/
-    class Ball: Label //származtasd a Label osztályból
+    //publicot tedd elé!
+    public class Ball: Label //származtasd a Label osztályból
     {
         public Ball() //ctor tab tab - konstruktor 
         {
