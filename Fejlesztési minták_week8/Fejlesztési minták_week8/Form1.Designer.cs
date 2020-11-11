@@ -35,11 +35,13 @@
             this.Button1 = new System.Windows.Forms.Button();
             this.createTimer = new System.Windows.Forms.Timer(this.components);
             this.conveyorTimer = new System.Windows.Forms.Timer(this.components);
+            this.button3 = new System.Windows.Forms.Button();
             this.mainpanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainpanel
             // 
+            this.mainpanel.Controls.Add(this.button3);
             this.mainpanel.Controls.Add(this.label1);
             this.mainpanel.Controls.Add(this.Button2);
             this.mainpanel.Controls.Add(this.Button1);
@@ -90,6 +92,17 @@
             this.conveyorTimer.Interval = 10;
             this.conveyorTimer.Tick += new System.EventHandler(this.ConveyorTimer_Tick);
             // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.button3.Location = new System.Drawing.Point(397, 76);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(95, 38);
+            this.button3.TabIndex = 3;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.Button3_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -112,6 +125,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button Button2;
         private System.Windows.Forms.Button Button1;
+        private System.Windows.Forms.Button button3;
     }
 }
 
