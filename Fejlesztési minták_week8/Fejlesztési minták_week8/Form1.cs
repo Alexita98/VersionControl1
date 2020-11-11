@@ -80,7 +80,10 @@ namespace Fejlesztési_minták_week8
 
         private void Button2_Click(object sender, EventArgs e) //Ball
         {
-            Factory = new BallFactory();
+            Factory = new BallFactory()
+            {
+                BallColor = button3.BackColor
+            };
         }
 
         private void DisplayNext()
