@@ -7,13 +7,11 @@ using System.Threading.Tasks;
 
 namespace Fejlesztési_minták_week8.Entities
 {
-    //publicot tedd elé
-    public class BallFactory : IToyFactory
+    class CarFactory : IToyFactory
     {
-        //Az osztálynak legyen egy függvénye CreateNew néven Ball visszatérési értékkel.
         public Toy CreateNew()
         {
-            return new Ball(); //A függvényben hozz létre egy Ball példányt és add vissza az értékét.
+            return new Car(); 
         }
     }
 }
