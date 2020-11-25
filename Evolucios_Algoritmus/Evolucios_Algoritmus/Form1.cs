@@ -21,6 +21,9 @@ namespace Evolucios_Algoritmus
         int nbrOfStepsIncrement = 10;
         int generation = 1;
 
+        Brain winnerBrain = null;
+
+
         public Form1()
         {
             InitializeComponent();
@@ -52,6 +55,20 @@ namespace Evolucios_Algoritmus
                              orderby p.GetFitness() descending
                              select p;
             var topPerformers = playerList.Take(populationSize / 2).ToList();
+
+
+            /*van-e olyan játékos, aki megnyerte a pályát. Ha van ilyen, akkor mentsd
+             * le az agyát és állítsd le a futtatást.*/
+            var winners = from p in topPerformers
+                          where p.IsWinner
+                          select p;
+            if (winners.Count() > 0)
+            {
+                winnerBrain = winners.FirstOrDefault().Brain.Clone();
+                gc.GameOver -= Gc_GameOver; /*Vedd le a GameOver eseményről a hozzárendelt eseménykezelőt, hogy később ne próbáljon folytatódni az evolúciós algoritmus.*/
+                return;
+            }
+
 
             gc.ResetCurrentLevel();
             foreach (var p in topPerformers)
